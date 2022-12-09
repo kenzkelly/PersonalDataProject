@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import json
 
 
 #first round of abstraction -- goes through each row and appends the series' to a list
@@ -50,25 +51,14 @@ def make_dataframe(list):
     df = pd.DataFrame(final_dict)
     return df
 
-
-
-df = pd.read_json('liked_posts.json')
-tmp = make_temp(df)
-
-tmp = make_full_temp(tmp)
-df = make_dataframe(tmp)
-
-timestamp = pd.to_datetime(df['timestamp'], unit='s')
-year = {'year': []}
-hour = {'hour': []}
-
-for time in timestamp: 
-    year["year"].append(str(time)[:4])
-    hour['hour'].append(str(time)[11:13])
-
-df['year'] = year['year']
-df['hour'] = hour['hour']
-
+df = pd.read_json('post_comments.json')
+df = make_temp(df)
+df = make_full_temp(df)
+df = make_dataframe(df)
 print(df)
 
-df.to_csv('liked_posts_instagram.csv')
+tmp = df['string_map_data']
+keys = get_keys(tmp)
+keys = keys[0]
+i = 0 
+#while i < len(tmp):
