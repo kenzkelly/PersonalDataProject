@@ -60,5 +60,33 @@ print(df)
 tmp = df['string_map_data']
 keys = get_keys(tmp)
 keys = keys[0]
+comment = [] 
+creation = []
+media_owner = []
 i = 0 
-#while i < len(tmp):
+while i < len(tmp):
+    j = 0 
+    while j < len(keys):
+        if keys[j] == "Comment":
+            comment.append(tmp[i][keys[j]]['value'])
+        elif keys[j] == "Comment creation time": 
+            creation.append(tmp[i][keys[j]]['timestamp'])
+        elif keys[j] == 'Media owner':
+            media_owner.append(tmp[i][keys[j]]['value'])
+        else: 
+             print(1)
+        j += 1
+    i += 1
+
+df['Comment'] = comment 
+df['Timestamp'] = creation 
+df['Media Owner'] = media_owner
+
+print(df)
+
+del df['media_map_data']
+del df['string_map_data']
+
+df['Timestamp'] = pd.to_datetime(df['Timestamp'], unit = 's')
+
+df.to_csv("post_comments_instagram.csv")
