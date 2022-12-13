@@ -51,57 +51,9 @@ def make_dataframe(list):
     df = pd.DataFrame(final_dict)
     return df
 
-df = pd.read_json('post_comments.json')
-df = make_temp(df)
-df = make_full_temp(df)
-df = make_dataframe(df)
-print(df)
-
-tmp = df['string_map_data']
-keys = get_keys(tmp)
-keys = keys[0]
-comment = [] 
-creation = []
-media_owner = []
-i = 0 
-while i < len(tmp):
-    j = 0 
-    while j < len(keys):
-        if keys[j] == "Comment":
-            comment.append(tmp[i][keys[j]]['value'])
-        elif keys[j] == "Comment creation time": 
-            creation.append(tmp[i][keys[j]]['timestamp'])
-        elif keys[j] == 'Media owner':
-            media_owner.append(tmp[i][keys[j]]['value'])
-        else: 
-             print(1)
-        j += 1
-    i += 1
-
-df['Comment'] = comment 
-df['Timestamp'] = creation 
-df['Media Owner'] = media_owner
-
-print(df)
-
-del df['media_map_data']
-del df['string_map_data']
-
-df['Timestamp'] = pd.to_datetime(df['Timestamp'], unit = 's')
-
-year = []
-time = []
-
-for row in df['Timestamp']:
-    year.append(str(row)[:4])
-    thing = str(row)[11:].split(':')
-    time.append(thing[0] + thing[1] + thing[2])
-
-
-df['year'] = year 
-df['time'] = time
-del df['Timestamp']
-del df['Media Owner']
-
-print(df)
-df.to_csv('post_comments_instagram.csv')
+df2 = pd.read_csv('post_comments_instagram.csv')
+df2['type'] = 'comment'
+del df2['Unnamed: 0']
+del df2['Comment']
+print(df2)
+df2.to_csv("post_comments_instagram.csv")
