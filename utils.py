@@ -89,4 +89,19 @@ del df['string_map_data']
 
 df['Timestamp'] = pd.to_datetime(df['Timestamp'], unit = 's')
 
-df.to_csv("post_comments_instagram.csv")
+year = []
+time = []
+
+for row in df['Timestamp']:
+    year.append(str(row)[:4])
+    thing = str(row)[11:].split(':')
+    time.append(thing[0] + thing[1] + thing[2])
+
+
+df['year'] = year 
+df['time'] = time
+del df['Timestamp']
+del df['Media Owner']
+
+print(df)
+df.to_csv('post_comments_instagram.csv')
