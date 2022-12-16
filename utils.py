@@ -51,9 +51,3 @@ def make_dataframe(list):
     df = pd.DataFrame(final_dict)
     return df
 
-df2 = pd.read_csv('post_comments_instagram.csv')
-df2['type'] = 'comment'
-del df2['Unnamed: 0']
-del df2['Comment']
-print(df2)
-df2.to_csv("post_comments_instagram.csv")
